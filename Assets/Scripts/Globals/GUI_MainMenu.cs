@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-class GUI_MainMenu
+class GUI_MainMenu:MonoBehaviour
 {
     private enum MENUS { MainMenu, NewGame, PlayerGeneration, Options };
 
@@ -14,10 +14,10 @@ class GUI_MainMenu
     private int buttonHeight = 50;
     private int buttonSpace = 20;
 
-    private int playerCount = 1;
+    private int playerCount = 0;
     private string[] selectionGridPlayer = new string[4] { "1", "2", "3", "4" };
 
-    private int curPlayerConfiguration = 1;
+    private int curPlayerConfiguration = 0;
 
     private string playerName = "PlayerName";
     private string gangName = "GangName";
@@ -65,7 +65,8 @@ class GUI_MainMenu
                 case 2:
                     if (GUI.Button(new Rect(xPos, 100 + (buttonHeight + buttonSpace)*i, buttonWidth, buttonHeight), "Spieler konfigurieren"))
                     {
-                        GameProperties.player = new Player[playerCount];
+                        GameProperties.player = new Player[playerCount+1];
+                        GameProperties.playerCount = playerCount;
                         currentMenu = MENUS.PlayerGeneration; }
                     break;
                 case 4:
@@ -87,7 +88,7 @@ class GUI_MainMenu
             switch (i)
             {
                 case 1:
-                    GUI.Label(rect, "Spieler + " + curPlayerConfiguration.ToString());
+                    GUI.Label(rect, "Spieler - " + (curPlayerConfiguration+1).ToString());
                     break;
                 case 2:
                     playerName = GUI.TextField(rect, playerName);                    
@@ -104,13 +105,19 @@ class GUI_MainMenu
 
                     if (GUI.Button(rect, text))
                     {
+                        GameProperties.player[curPlayerConfiguration] = new Player();
+                        if (GameProperties.player[0] == null) Debug.Log("IS NULL");
                         GameProperties.player[curPlayerConfiguration].playerName = playerName;
                         GameProperties.player[curPlayerConfiguration].gangName = gangName;
 
                         if (curPlayerConfiguration == playerCount)
-                        {Application.LoadLevel(Application.loadedLevel+1);}
+                        {
+                            GameProperties.curDay = 1;
+                            Application.LoadLevel(Application.loadedLevel+1);
+                        }
                         else
                         {
+                            
                             curPlayerConfiguration++;
                             playerName = "PlayerName";
                             gangName = "GangName";

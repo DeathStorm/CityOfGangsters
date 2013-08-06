@@ -21,6 +21,4 @@ using UnityEngine;
         public Item[] inventory = new Item[6];
 
 
-        void Player()
-        { }
     }
