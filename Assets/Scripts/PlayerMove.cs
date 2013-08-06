@@ -11,7 +11,7 @@ public class PlayerMove : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () 
-    { 
+    {
         Vector3 playerPosition = gameObject.transform.position;
 
         if (Input.GetKeyDown(KeyCode.W)) {playerPosition.z += 5;}
