@@ -19,6 +19,19 @@ using UnityEngine;
         public Item shoes = null;
         public Item smartPhone = null;
         public Item[] inventory = new Item[6];
+        public GangMember[] gangMember = new GangMember[8];
 
+        public Player():base()
+        {
+            
+            for (int i = 0; i <= inventory.Length; i++)
+            {
+                inventory[i] = null;
+            }
+            for (int i = 0; i <= gangMember.Length; i++)
+            {
+                gangMember[i] = null;
+            }
+        }
 
     }

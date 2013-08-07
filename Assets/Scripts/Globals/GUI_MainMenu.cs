@@ -4,24 +4,28 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-class GUI_MainMenu:MonoBehaviour
+class GUI_MainMenu : MonoBehaviour
 {
     private enum MENUS { MainMenu, NewGame, PlayerGeneration, Options };
 
     private MENUS currentMenu = MENUS.MainMenu;
 
-    private int buttonWidth = 100;
-    private int buttonHeight = 50;
-    private int buttonSpace = 20;
+
 
     private int playerCount = 0;
     private string[] selectionGridPlayer = new string[4] { "1", "2", "3", "4" };
 
     private int curPlayerConfiguration = 0;
 
-    private string playerName = "PlayerName";
-    private string gangName = "GangName";
-        
+    private string playerName;
+    private string gangName;
+    private Dictionary<ENUMS.ABILITIES, int> abilities = new Dictionary<ENUMS.ABILITIES, int>();
+
+    //private int strenght;
+    //private int intelligence;
+    //private int dexterity;
+    //private int resistance;
+    private int abillityPoints;
 
     void OnGUI()
     {
@@ -41,6 +45,10 @@ class GUI_MainMenu:MonoBehaviour
 
     void Draw_MainMenu()
     {
+        int buttonWidth = 100;
+        int buttonHeight = 50;
+        int buttonSpace = 20;
+
         int xPos = (Screen.width - buttonWidth) / 2;
 
         if (GUI.Button(new Rect(xPos, 100, buttonWidth, buttonHeight), "Start"))
@@ -53,6 +61,10 @@ class GUI_MainMenu:MonoBehaviour
 
     void Draw_NewGame()
     {
+        int buttonWidth = 100;
+        int buttonHeight = 50;
+        int buttonSpace = 20;
+
         int xPos = (Screen.width - buttonWidth) / 2;
 
         for (int i = 0; i < 4; i++)
@@ -63,14 +75,16 @@ class GUI_MainMenu:MonoBehaviour
                     playerCount = GUI.SelectionGrid(new Rect(xPos, 100 + (buttonHeight + buttonSpace) * i, buttonWidth, buttonHeight), playerCount, selectionGridPlayer, selectionGridPlayer.Length);
                     break;
                 case 2:
-                    if (GUI.Button(new Rect(xPos, 100 + (buttonHeight + buttonSpace)*i, buttonWidth, buttonHeight), "Spieler konfigurieren"))
+                    if (GUI.Button(new Rect(xPos, 100 + (buttonHeight + buttonSpace) * i, buttonWidth, buttonHeight), "Spieler konfigurieren"))
                     {
-                        GameProperties.player = new Player[playerCount+1];
+                        GameProperties.player = new Player[playerCount + 1];
                         GameProperties.playerCount = playerCount;
-                        currentMenu = MENUS.PlayerGeneration; }
+                        SetDefault();
+                        currentMenu = MENUS.PlayerGeneration;
+                    }
                     break;
                 case 4:
-                    if (GUI.Button(new Rect(xPos, 100 + (buttonHeight + buttonSpace)*i, buttonWidth, buttonHeight), "Zurück"))
+                    if (GUI.Button(new Rect(xPos, 100 + (buttonHeight + buttonSpace) * i, buttonWidth, buttonHeight), "Zurück"))
                     { currentMenu = MENUS.MainMenu; }
                     break;
             }
@@ -80,55 +94,135 @@ class GUI_MainMenu:MonoBehaviour
 
     void Draw_PlayerGeneration()
     {
-        int xPos = (Screen.width - buttonWidth) / 2;
+        int buttonWidth = 100;
+        int buttonHeight = 25;
+        int buttonSpace = 10;
+
+
+        int posX = (Screen.width - buttonWidth) / 2;
+        int posY;
+        ENUMS.ABILITIES abilitie;
 
         for (int i = 0; i < 6; i++)
         {
-            Rect rect = new Rect(xPos, 100 + (buttonHeight + buttonSpace) * i, buttonWidth, buttonHeight);
+            Rect rect = new Rect(posX, 100 + (buttonHeight + buttonSpace) * i, buttonWidth, buttonHeight);
+            posY = 100 + (buttonHeight + buttonSpace) * i;
+
             switch (i)
             {
                 case 1:
-                    GUI.Label(rect, "Spieler - " + (curPlayerConfiguration+1).ToString());
+                    GUI.Label(rect, "Spieler - " + (curPlayerConfiguration + 1).ToString());
                     break;
                 case 2:
-                    playerName = GUI.TextField(rect, playerName);                    
+                    GUI.Label(new Rect(posX, posY, buttonWidth / 2, buttonHeight), "Spielername:");
+                    playerName = GUI.TextField(new Rect(posX+buttonWidth/2,posY,buttonWidth/2,buttonHeight), playerName);
                     break;
                 case 3:
-                    gangName = GUI.TextField(rect, gangName);
+                    GUI.Label(new Rect(posX, posY, buttonWidth / 2, buttonHeight), "Gangname:");
+                    gangName = GUI.TextField(new Rect(posX + buttonWidth / 2, posY, buttonWidth / 2, buttonHeight), gangName);                    
+                    break;
+                case 4:                     
+                    GUI.Label(new Rect(posX, posY, buttonWidth / 2, buttonHeight), "Stärke:");
+                    abilitie = ENUMS.ABILITIES.Strength;
+                    if (GUI.Button(new Rect(posX + buttonWidth / 2, posY, buttonWidth / 8, buttonHeight), "-")) ChangeAbilitie(abilitie, -1);
+                    GUI.TextArea(new Rect(posX + buttonWidth * 5 / 8, posY, buttonWidth / 4, buttonHeight), abilities[abilitie].ToString());
+                    if (GUI.Button(new Rect(posX + buttonWidth * 7 / 8, posY, buttonWidth / 8, buttonHeight), "+")) ChangeAbilitie(abilitie, 1);
                     break;
                 case 5:
+                    GUI.Label(new Rect(posX, posY, buttonWidth / 2, buttonHeight), "Geschicklichkeit:");
+                    abilitie = ENUMS.ABILITIES.Dexterity;
+                    if (GUI.Button(new Rect(posX + buttonWidth / 2, posY, buttonWidth / 8, buttonHeight), "-")) ChangeAbilitie(abilitie, -1);
+                    GUI.TextArea(new Rect(posX + buttonWidth * 5 / 8, posY, buttonWidth / 4, buttonHeight), abilities[abilitie].ToString());
+                    if (GUI.Button(new Rect(posX + buttonWidth * 7 / 8, posY, buttonWidth / 8, buttonHeight), "+")) ChangeAbilitie(abilitie, 1);
+                    break;
+                case 6:
+                    GUI.Label(new Rect(posX, posY, buttonWidth / 2, buttonHeight), "Intelligenz:");
+                    abilitie = ENUMS.ABILITIES.Intelligence;
+                    if (GUI.Button(new Rect(posX + buttonWidth / 2, posY, buttonWidth / 8, buttonHeight), "-")) ChangeAbilitie(abilitie, -1);
+                    GUI.TextArea(new Rect(posX + buttonWidth * 5 / 8, posY, buttonWidth / 4, buttonHeight), abilities[abilitie].ToString());
+                    if (GUI.Button(new Rect(posX + buttonWidth * 7 / 8, posY, buttonWidth / 8, buttonHeight), "+")) ChangeAbilitie(abilitie, 1);
+                    break;
+                case 7:
+                    GUI.Label(new Rect(posX, posY, buttonWidth / 2, buttonHeight), "Wiederstand:");
+                    abilitie = ENUMS.ABILITIES.Resistance;
+                    if (GUI.Button(new Rect(posX + buttonWidth / 2, posY, buttonWidth / 8, buttonHeight), "-")) ChangeAbilitie(abilitie, -1);
+                    GUI.TextArea(new Rect(posX + buttonWidth * 5 / 8, posY, buttonWidth / 4, buttonHeight), abilities[abilitie].ToString());
+                    if (GUI.Button(new Rect(posX + buttonWidth * 7 / 8, posY, buttonWidth / 8, buttonHeight), "+")) ChangeAbilitie(abilitie, 1);
+                    break;
+                case 8:
+                    GUI.Label(new Rect(posX, posY, buttonWidth / 2, buttonHeight), "Fertigkeitpunkte:");                    
+                    GUI.TextArea(new Rect(posX + buttonWidth /2, posY, buttonWidth / 4, buttonHeight), abillityPoints.ToString());                    
+                    break;
+                case 9:
                     string text;
                     if (curPlayerConfiguration == playerCount)
-                    { text = "Spiel starten"; } 
+                    { text = "Spiel starten"; }
                     else
-                    { text = "Nächster Spieler"; } 
+                    { text = "Nächster Spieler"; }
 
                     if (GUI.Button(rect, text))
                     {
-                        GameProperties.player[curPlayerConfiguration] = new Player();
-                        if (GameProperties.player[0] == null) Debug.Log("IS NULL");
+                        //GameProperties.player[curPlayerConfiguration] = new Player();
                         GameProperties.player[curPlayerConfiguration].playerName = playerName;
                         GameProperties.player[curPlayerConfiguration].gangName = gangName;
+                        GameProperties.player[curPlayerConfiguration].abilities = abilities;
+
+                        //GameProperties.player[curPlayerConfiguration].strenght = ab;
+                        //GameProperties.player[curPlayerConfiguration].intelligence = intelligence;
+                        //GameProperties.player[curPlayerConfiguration].dexterity = dexterity;
+                        //GameProperties.player[curPlayerConfiguration].resistance = resistance;
 
                         if (curPlayerConfiguration == playerCount)
                         {
                             GameProperties.curDay = 1;
-                            Application.LoadLevel(Application.loadedLevel+1);
+                            Application.LoadLevel(Application.loadedLevel + 1);
                         }
                         else
                         {
-                            
+
                             curPlayerConfiguration++;
-                            playerName = "PlayerName";
-                            gangName = "GangName";
+                            SetDefault();
                         }
                     }
                     break;
-                case 6:
+                case 10:
                     if (GUI.Button(rect, "Zurück"))
                     { currentMenu = MENUS.NewGame; }
                     break;
             }
         }
     }
+
+    void SetDefault()
+    {
+        playerName = "PlayerName";
+        gangName = "GangName";
+        abilities[ENUMS.ABILITIES.Strength] = 10;
+        abilities[ENUMS.ABILITIES.Intelligence] = 10;
+        abilities[ENUMS.ABILITIES.Dexterity] = 10;
+        abilities[ENUMS.ABILITIES.Resistance] = 10;
+
+        abillityPoints = 5;
+    }
+
+    void ChangeAbilitie(ENUMS.ABILITIES abilitie, int i)
+    {
+        if (i > 0)
+        {
+            if (abillityPoints > 0)
+            {
+                abilities[abilitie]++;
+                abillityPoints--;
+            }
+        }
+        else
+        {
+            if (abilities[abilitie] >= 11)
+            {
+                abilities[abilitie]--;
+                abillityPoints++;
+            }
+        }
+    }
+
 }

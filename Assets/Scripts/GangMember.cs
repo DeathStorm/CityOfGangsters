@@ -7,6 +7,8 @@ using UnityEngine;
     class GangMember:MonoBehaviour
     {
         public string playerName = "player";
+        public Dictionary<ENUMS.ABILITIES, int> abilities = new Dictionary<ENUMS.ABILITIES, int>();
+
         public int strenght = 10;
         public int intelligence = 10;
         public int dexterity = 10;
@@ -18,6 +20,13 @@ using UnityEngine;
         public Item rangedWeapon = null;
         public Item meleeWeapon = null;
 
+        public GangMember()
+        {
+            abilities[ENUMS.ABILITIES.Strength] = 10;
+            abilities[ENUMS.ABILITIES.Intelligence] = 10;
+            abilities[ENUMS.ABILITIES.Dexterity] = 10;
+            abilities[ENUMS.ABILITIES.Resistance] = 10;
+        }
 
         void Awake()
         {
