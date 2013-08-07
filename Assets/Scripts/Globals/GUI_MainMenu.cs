@@ -17,7 +17,7 @@ class GUI_MainMenu : MonoBehaviour
 
     private int curPlayerConfiguration = 0;
 
-    private string playerName;
+    private string characterName;
     private string gangName;
     private Dictionary<ENUMS.ABILITIES, int> abilities = new Dictionary<ENUMS.ABILITIES, int>();
 
@@ -94,7 +94,7 @@ class GUI_MainMenu : MonoBehaviour
 
     void Draw_PlayerGeneration()
     {
-        int buttonWidth = 100;
+        int buttonWidth = 200;
         int buttonHeight = 25;
         int buttonSpace = 10;
 
@@ -103,7 +103,7 @@ class GUI_MainMenu : MonoBehaviour
         int posY;
         ENUMS.ABILITIES abilitie;
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 10; i++)
         {
             Rect rect = new Rect(posX, 100 + (buttonHeight + buttonSpace) * i, buttonWidth, buttonHeight);
             posY = 100 + (buttonHeight + buttonSpace) * i;
@@ -115,7 +115,7 @@ class GUI_MainMenu : MonoBehaviour
                     break;
                 case 2:
                     GUI.Label(new Rect(posX, posY, buttonWidth / 2, buttonHeight), "Spielername:");
-                    playerName = GUI.TextField(new Rect(posX+buttonWidth/2,posY,buttonWidth/2,buttonHeight), playerName);
+                    characterName = GUI.TextField(new Rect(posX+buttonWidth/2,posY,buttonWidth/2,buttonHeight), characterName);
                     break;
                 case 3:
                     GUI.Label(new Rect(posX, posY, buttonWidth / 2, buttonHeight), "Gangname:");
@@ -162,10 +162,15 @@ class GUI_MainMenu : MonoBehaviour
 
                     if (GUI.Button(rect, text))
                     {
-                        //GameProperties.player[curPlayerConfiguration] = new Player();
-                        GameProperties.player[curPlayerConfiguration].playerName = playerName;
+                        Debug.Log(GameProperties.player.Length.ToString() + " - " + curPlayerConfiguration.ToString());
+                        GameProperties.player[curPlayerConfiguration] = new Player();
+                        GameProperties.player[curPlayerConfiguration].characterName = characterName;
                         GameProperties.player[curPlayerConfiguration].gangName = gangName;
-                        GameProperties.player[curPlayerConfiguration].abilities = abilities;
+                        //GameProperties.player[curPlayerConfiguration].abilities = abilities;
+                        GameProperties.player[curPlayerConfiguration].abilities[ENUMS.ABILITIES.Strength] = abilities[ENUMS.ABILITIES.Strength];
+                        GameProperties.player[curPlayerConfiguration].abilities[ENUMS.ABILITIES.Dexterity] = abilities[ENUMS.ABILITIES.Dexterity];
+                        GameProperties.player[curPlayerConfiguration].abilities[ENUMS.ABILITIES.Intelligence] = abilities[ENUMS.ABILITIES.Intelligence];
+                        GameProperties.player[curPlayerConfiguration].abilities[ENUMS.ABILITIES.Resistance] = abilities[ENUMS.ABILITIES.Resistance];
 
                         //GameProperties.player[curPlayerConfiguration].strenght = ab;
                         //GameProperties.player[curPlayerConfiguration].intelligence = intelligence;
@@ -195,7 +200,7 @@ class GUI_MainMenu : MonoBehaviour
 
     void SetDefault()
     {
-        playerName = "PlayerName";
+        characterName = "PlayerName";
         gangName = "GangName";
         abilities[ENUMS.ABILITIES.Strength] = 10;
         abilities[ENUMS.ABILITIES.Intelligence] = 10;

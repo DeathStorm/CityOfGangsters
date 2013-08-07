@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-    class GangMember:MonoBehaviour
+    class GangMember
     {
-        public string playerName = "player";
+        public string characterName = "player";
         public Dictionary<ENUMS.ABILITIES, int> abilities = new Dictionary<ENUMS.ABILITIES, int>();
 
         public int strenght = 10;
@@ -40,7 +40,7 @@ using UnityEngine;
 
             if (curHealth <= 0)
             {
-                Destroy(this);
+                //Destroy(this);
             }
         }
 

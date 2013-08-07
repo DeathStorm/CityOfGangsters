@@ -24,11 +24,11 @@ using UnityEngine;
         public Player():base()
         {
             
-            for (int i = 0; i <= inventory.Length; i++)
+            for (int i = 0; i < inventory.Length; i++)
             {
                 inventory[i] = null;
             }
-            for (int i = 0; i <= gangMember.Length; i++)
+            for (int i = 0; i < gangMember.Length; i++)
             {
                 gangMember[i] = null;
             }

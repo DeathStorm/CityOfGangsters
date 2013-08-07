@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\GangMember.cs" />
+     <Compile Include="Assets\Scripts\Globals\ENUMS.cs" />
      <Compile Include="Assets\Scripts\Globals\FirstLoadScreen.cs" />
      <Compile Include="Assets\Scripts\Globals\GUI_Game.cs" />
      <Compile Include="Assets\Scripts\Globals\GUI_MainMenu.cs" />
