@@ -9,7 +9,9 @@ using UnityEngine;
 
         const int maxPlayers = 4;
         //public static int curActivePlayer;
-        public static int curPlayer;
+        public static int curPlayerInt;
+        public static Player curPlayer { get { return player[curPlayerInt]; } }
+            
         public static int curDay;
         public static int playerCount;
 
