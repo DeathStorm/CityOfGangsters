@@ -6,11 +6,14 @@ using UnityEngine;
 
     class Player:GangMember
     {
+
         
+
         public string gangName = "gangname";
         public int gangsterLevel = 1;
         public int gansterPoints = 0;
-        public int movementPoints = 10;
+        public int curMovementPoints = 10;
+        public int maxMovementPoints = 10;
         public int money = 50;
 
         public Item body = null;
@@ -20,6 +23,18 @@ using UnityEngine;
         public Item smartPhone = null;
         public Item[] inventory = new Item[6];
         public GangMember[] gangMember = new GangMember[8];
+
+        //public int strenght = 10;
+        //public int intelligence = 10;
+        //public int dexterity = 10;
+        //public int resistance = 10;
+
+        //public int maxHealth = 100;
+        //public int curHealth;
+
+        //public Item rangedWeapon = null;
+        //public Item meleeWeapon = null;
+
 
         public Player():base()
         {
@@ -33,5 +48,12 @@ using UnityEngine;
                 gangMember[i] = null;
             }
         }
+
+
+        public void ReCalcAllAttributes ()
+        {
+
+        }
+
 
     }

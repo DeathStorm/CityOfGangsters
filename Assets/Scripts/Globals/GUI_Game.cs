@@ -45,4 +45,10 @@ using UnityEngine;
             GUILayout.EndArea();
         }
 
+
+        void Draw_BattleScreen()
+        { 
+
+        }
+
     }
